@@ -1,0 +1,204 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*----- Gradient Navbar------- */
+.gradient-navbar {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    color: white;
+    position: fixed;
+    width: 100%;
+}
+
+.gradient-navbar .navbar-brand,
+.gradient-navbar .nav-link,
+.gradient-navbar .text-light,
+.gradient-navbar .btn-outline-light {
+    color: #ffffff;
+}
+
+/*-----Logout Button------- */
+.gradient-navbar .btn-outline-light:hover {
+    background-color: rgb(243, 237, 237);
+    color: #ec0707;
+    border: solid 1px #ec0707;
+    transition: all 1s ease;
+}
+
+
+/*------ Sidebar_icon_Button ------- */
+
+.toggle-btn {
+    position: fixed;
+    top: 50px;
+}
+
+.toggle-btn {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.toggle-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(101, 60, 255, 0.4);
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
+    color: #fff;
+}
+
+.toggle-btn:hover .bar-icon {
+    transition: transform 0.3s ease;
+}
+
+.bar-icon {
+    transition: transform 0.3s ease;
+}
+
+
+/*-------------------- Sidebar_Canvas --------------------- */
+
+.custom-width {
+    width: 350px !important;
+}
+
+.sidebar-btn-custom {
+    text-align: center;
+    display: block;
+    width: 90%;
+    height: 70px;
+    text-align: center;
+    color: #1d24ec;
+    margin-bottom: 5px;
+    /* transition: background-color 0.3s ease; */
+    border-radius: 15px;
+    font-weight: bolder;
+}
+
+.sidebar-btn-custom i {
+    font-size: 1.5rem;
+    margin-right: 100px;
+}
+
+.sidebar-btn-custom:hover {
+    background-color: rgb(111, 212, 232);
+    color: black;
+}
+
+.sidebar-btn-custom.active {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    /* transition: background-color 0.3s ease; */
+    color: #ffff;
+    font-weight: bolder;
+}
+
+/* -------------------/AD_AG_US_create/---------------- */
+
+.crt_btn {
+    width: 150px;
+    border: none;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(270deg, #ff6b6b, #f06595, #845ef7, #5c7cfa);
+    background-size: 800% 800%;
+    animation: gradientMove 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin-left: 78%;
+    transition: all 2s ease;
+    border-radius: none;
+}
+
+.crt_btn:hover {
+    width: 170px;
+    border-radius: 25px;
+}
+
+
+/* --------------Submitt_Button----------------- */
+.create_btn {
+    width: 150px;
+    padding: 10px;
+    font-size: 15px;
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 3px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(270deg, #ff6b6b, #f06595, #845ef7, #5c7cfa);
+    background-size: 800% 800%;
+    animation: gradientMove 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    border-radius: none;
+    background-color: rgb(13, 195, 208);
+    margin-left: 33%;
+}
+
+.create_btn:hover {
+    box-shadow: 0 4px 20px rgba(13, 195, 208, 0.4);
+    color: black;
+    transition: all 3s ease;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    width: 170px;
+    font-style: italic;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+/* -----------------Animation------------------ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+.content-section {
+    animation: fadeIn 0.7s ease-in-out;
+}
+
+.content-section.d-none {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.7s ease-in-out;
+}
