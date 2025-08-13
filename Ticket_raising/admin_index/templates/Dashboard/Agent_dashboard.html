@@ -1,0 +1,390 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Agent</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/agent.css' %}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body class="d-flex flex-column min-vh-100" style="background-color: rgb(238, 235, 232);">
+
+    <!------------------Navigation_Bar-------------------->
+
+    <nav class="navbar navbar-expand-lg px-4 gradient-navbar">
+         <img src="{% static 'favicon/favicon.ico' %}" style="border-radius: 50px;" alt="" width="50px" height="50">
+        <h3 class="ms-2" style="font-family: 'Gabarito', sans-serif;font-weight: 400;font-style: normal;">Help Desk</h3>
+        <div class="ms-auto">
+            {% if agent %}
+            <span class="text-light fs-5">Agent : {{ agent }}</span>
+
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+            aria-controls="offcanvasWithBothOptions"><img src="{% static 'profile.png' %}"
+                width="40px" height="40" style="border-radius: 30px;" alt="">
+            </button>
+
+            <button class="btn btn-outline-light btn-sm p-2" data-bs-toggle="modal" data-bs-target="#logoutModal"><i
+                    class="fa-solid fa-right-from-bracket me-1" style="font-size: 15px;"></i><span
+                    style="font-size: 15px;">Logout</span>
+            </button>
+            {% endif %}
+        </div>
+    </nav>
+
+
+    <!------------------Agent_Profile_Offcanvas-------------------->
+    <div class="offcanvas offcanvas-start text-dark" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel" style="background-color: rgb(238, 235, 232);">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="staticBackdropLabel"
+                style="font-size: 30px; color: rgb(17, 5, 187); font-weight: bolder ;">
+                Agent Profile</h5>
+            <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="offcanvas"
+                aria-label="Close">
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-flex-row p-2 text-center">
+                <i class="fa-solid fa-circle-user" style="color: rgb(23, 96, 206); font-size: 130px;"></i>
+                <h3 class="mt-2">{{ agent.agent_name }}</h3>
+            </div>
+            <form method="post" action="{% url 'agent_profile_update' %}" class="w-100">
+                {% csrf_token %}
+                <!-- Agent Name -->
+                <div class="form-floating mb-4">
+                    <input type="text" id="AgentName" name="agent_name" value="{{ agent.agent_name }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="Agent Name" required>
+                    <label for="AgentName">Agent Name</label>
+                </div>
+
+                <!-- Agent ID -->
+                <div class="form-floating mb-4">
+                    <input type="text" id="userid" name="agent_id" value="{{ agent.agent_id }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="Agent ID" data-bs-toggle="tooltip"
+                        title="Only Admin Can Update this field" readonly>
+                    <label for="userid">Agent ID</label>
+                </div>
+
+                <!-- Agent Email -->
+                <div class="form-floating mb-4">
+                    <input type="email" id="userMail" name="agent_email" value="{{ agent.email }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="Agent Email" required>
+                    <label for="userMail">Agent Email</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating mb-4">
+                    <input type="password" id="agentPass" name="password" value="{{ agent.password }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="Password" required>
+                    <label for="agentPass">Password</label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="mt-2 btn btn-primary w-100">
+                    <i class="fa-solid fa-user-plus me-2"></i>Update Agent
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!------------------_Logout_Message_-------------------->
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">Yes, Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!------------ Sidebar -------------->
+
+    <button class="btn btn-secondary toggle-btn ms-2 mt-4" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+        <i class="fa-solid fa-bars bar-icon fs-4"></i>
+    </button>
+
+    <div class="offcanvas offcanvas-start custom-width" tabindex="-1" id="staticBackdrop"
+        aria-labelledby="staticBackdropLabel" style="font-family: 'Gabarito', sans-serif; font-weight: 400;font-style: normal; background-color: rgb(238, 235, 232);">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="staticBackdropLabel"
+                style="font-size: 30px; color: rgb(17, 5, 187);text-shadow: 2px 2px 4px rgb(238, 149, 207); font-weight: bolder ;">
+                Agent Dashboard</h5>
+            <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body ">
+            <button class="sidebar-btn-custom dashboard mt-1 h5 ms-1" data-target="#dashboard">
+                <h5>TICKETS DASHBOARD</h5>
+            </button>
+
+            <button class="sidebar-btn-custom create_agent h5" data-target="#history">
+                <h5>TICKET HISTORY</h5>
+            </button>
+        </div>
+    </div>
+
+    <!----------------Sidebar Toggle Script----------------->
+
+    <main class="flex-grow-1 p-4 mt-3">
+        <div class="content-section active mt-5" id="dashboard">
+            <h1 class="text-center"
+                style="margin-right: 60px; font-size: 35px; color: rgb(17, 5, 187);text-shadow: 2px 2px 4px rgb(238, 149, 207);">
+                Tickets Dashboard
+            </h1>
+
+            <table class="table table-bordered text-center mt-4 h5" style="margin-left: 4%; width: 90%;">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Issue</th>
+                        <th>Priority</th>
+                        <th>Raised By</th>
+                        <th>Assigned Agent</th>
+                        <th>System no.</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for ticket in assigned_tickets %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ ticket.title }}</td>
+                        <td>
+                            {% if ticket.priority|lower == 'low' %}
+                            <span class="badge bg-success ">
+                                Low
+                            </span>
+                            {% elif ticket.priority|lower == 'medium' %}
+                            <span class="badge bg-warning text-dark ">
+                                Medium
+                            </span>
+                            {% elif ticket.priority|lower == 'high' %}
+                            <span class="badge bg-danger">
+                                High
+                            </span>
+                            {% elif ticket.priority|lower == 'urgent' %}
+                            <span class="badge bg-danger">
+                                Urgent
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary">
+                                <i class="fa-solid fa-question-circle me-1"></i> {{ ticket.priority }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>{{ ticket.user.user_name }}</td>
+                        <td>{{ ticket.assigned_agent.agent_name }}</td>
+                        <td>{{ ticket.user.sys_id }}</td>
+                        <td>{{ ticket.category }}</td>
+                        <td>
+                            {% if ticket.status == "Open" %}
+                            <span class="badge bg-warning text-dark">Open</span>
+                            {% elif ticket.status == "In Progress" %}
+                            <span class="badge bg-primary">In Progress</span>
+                            {% elif ticket.status == "Resolved" %}
+                            <span class="badge bg-success">Resolved</span>
+                            {% elif ticket.status == "Closed" %}
+                            <span class="badge bg-secondary">Closed</span>
+                            {% else %}
+                            <span class="badge bg-light text-dark">{{ ticket.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ ticket.created_at }}</td>
+                        <td>
+                            <button class="btn btn-outline-success btn-sm" type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop{{ ticket.id }}" data-ticket-id="{{ ticket.id }}"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title="If you want to update Ticket Status">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="text-muted">No assigned tickets found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Update status -->
+
+        {% for ticket in assigned_tickets %}
+         {% if ticket %} 
+        <div class="modal fade" id="staticBackdrop{{ ticket.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                            If you want to update <span class="fs-3 text-danger">{{ agent.agent_name }}</span>
+                        </h1>
+                        <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'ticket_details' ticket.id %}">
+                            {% csrf_token %}
+                            <select name="status" class="form-select form-select-sm d-inline w-50 ms-4" style="font-size: 20px;">
+                                <option value="Open" {% if ticket_details.status == "Open" %}selected{% endif %}>Open</option>
+                                <option value="In Progress" {% if ticket_details.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                                <option value="Resolved" {% if ticket_details.status == "Resolved" %}selected{% endif %}>Resolved</option>
+                                <option value="Closed" {% if ticket_details.status == "Closed" %}selected{% endif %}>Closed</option>
+                            </select>
+                            <button type="submit" class="btn-bd-primary ms-5 w-25">UPDATE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            No ticket details available for update.
+        </div>
+        {% endif %}
+        {% endfor %}
+
+
+        <div class="content-section active mt-5" id="history">
+            <h1 class="text-center"
+                style="margin-right: 60px; font-size: 35px; color: rgb(17, 5, 187);text-shadow: 2px 2px 4px rgb(238, 149, 207);">
+                Tickets history</h1>
+            <table class="table table-bordered mt-4 h5" style="margin-left: 4%; width: 90%;">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Title</th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for ticket in assigned_tickets %}
+                    <tr>
+                        <td>{{ ticket.title }}</td>
+                        <td>{{ ticket.user.user_name }}</td>
+                        <td>
+                            {% if ticket.status == "Open" %}
+                            <span class="badge bg-warning text-dark">Open</span>
+                            {% elif ticket.status == "In Progress" %}
+                            <span class="badge bg-primary">In Progress</span>
+                            {% elif ticket.status == "Resolved" %}
+                            <span class="badge bg-success">Resolved</span>
+                            {% elif ticket.status == "Closed" %}
+                            <span class="badge bg-secondary">Closed</span>
+                            {% else %}
+                            <span class="badge bg-light text-dark">{{ ticket.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ ticket.category }}</td>
+                        <td>{{ ticket.priority }}</td>
+                        <td>{{ ticket.created_at|date:"d M Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No ticket history found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+    <!------------------_Login_Message_-------------------->
+
+    {% if messages %}
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {% for msg in messages %}
+                <div class="modal-header 
+          {% if msg.tags == 'success' %}bg-success text-white
+          {% elif msg.tags == 'error' %}bg-danger text-white
+          {% endif %}">
+                    <h5 class="modal-title" id="messageModalLabel">
+                        {% if msg.tags == 'success' %}Success{% elif msg.tags == 'error' %}Error{% endif %}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ msg }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Auto-show message modal if messages exist
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('messageModal');
+            if (modalEl) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+
+            // Sidebar button click functionality
+            const sidebarButtons = document.querySelectorAll(".sidebar-btn-custom");
+            const contentSections = document.querySelectorAll(".content-section");
+
+            sidebarButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const targetId = button.getAttribute("data-target").replace('#', '');
+                    contentSections.forEach(section => section.classList.add("d-none"));
+                    sidebarButtons.forEach(btn => btn.classList.remove("active"));
+
+                    // Show the target section
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.classList.remove("d-none");
+                        targetSection.scrollIntoView({ behavior: "smooth" });
+                    }
+                    button.classList.add("active");
+                });
+            });
+            // Auto-click the first sidebar button to show its content
+            if (sidebarButtons.length > 0) {
+                sidebarButtons[0].click();
+            }
+        });
+    </script>
+</body>
+
+</html>

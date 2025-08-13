@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help Desk Login</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+  <div class="box">
+    <div class="login">
+      <form class="loginBx" method="post">
+        {% csrf_token %}
+        <h2>
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Login
+        </h2>
+
+        <!-- Role Selector -->
+        <select name="role" class="role-select" required>
+          <option value="">Role &gt;</option>
+          <option value="Admin">Admin</option>
+          <option value="Agent">Agent</option>
+          <option value="User">User</option>
+        </select>
+
+        <!-- Username -->
+        <input type="text" name="user" placeholder="Username" required />
+
+        <!-- Password -->
+        <div style="position: relative; width: 100%;">
+          <input type="password" id="passwordField" name="password" placeholder="Password" required />
+          <i class="fa-solid fa-eye eye-icon" id="togglePassword"
+            onclick="togglePassword()"
+            style="position:absolute; right:20px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px">
+          </i>
+        </div>
+
+        <!-- Submit -->
+        <input type="submit" value="Sign in" />
+      </form>
+    </div>
+  </div>
+
+  {% if messages %}
+  <!-- Bootstrap Modal -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {% for msg in messages %}
+        <div class="modal-header 
+          {% if msg.tags == 'success' %}bg-success text-white
+          {% elif msg.tags == 'error' %}bg-danger text-white
+          {% endif %}">
+          <h5 class="modal-title" id="messageModalLabel">
+            {% if msg.tags == 'success' %}Success{% elif msg.tags == 'error' %}Error{% endif %}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{ msg }}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modalElement = document.getElementById('messageModal');
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    });
+
+    function togglePassword() {
+      const passwordField = document.getElementById("passwordField");
+      const icon = document.getElementById("togglePassword");
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        passwordField.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+/*----- Gradient Navbar------- */
+.gradient-navbar {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    color: white;
+    position: fixed;
+    width: 100%;
+}
+
+.gradient-navbar .navbar-brand,
+.gradient-navbar .nav-link,
+.gradient-navbar .text-light,
+.gradient-navbar .btn-outline-light {
+    color: #ffffff;
+}
+
+/*-----Logout Button------- */
+.gradient-navbar .btn-outline-light:hover {
+    background-color: rgb(243, 237, 237);
+    color: #ec0707;
+    border: solid 1px #ec0707;
+    transition: all 1s ease;
+}
+
+
+/*------ Sidebar_icon_Button ------- */
+
+.toggle-btn {
+    position: fixed;
+    top: 50px;
+}
+
+.toggle-btn {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.toggle-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(101, 60, 255, 0.4);
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
+    color: #fff;
+}
+
+.toggle-btn:hover .bar-icon {
+    transition: transform 0.3s ease;
+}
+
+.bar-icon {
+    transition: transform 0.3s ease;
+}
+
+
+/*-------------------- Sidebar_Canvas --------------------- */
+
+.custom-width {
+    width: 350px !important;
+}
+
+.sidebar-btn-custom {
+    text-align: center;
+    display: block;
+    width: 90%;
+    height: 75px;
+    text-align: center;
+    color: #1d24ec;
+    margin-bottom: 35px;
+    /* transition: background-color 0.3s ease; */
+    border-radius: 15px;
+    font-weight: bolder;
+}
+
+.sidebar-btn-custom i {
+    font-size: 1.5rem;
+    margin-right: 100px;
+}
+
+.sidebar-btn-custom:hover {
+    background-color: rgb(111, 212, 232);
+    color: black; 
+}
+
+.sidebar-btn-custom.active {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    /* transition: background-color 0.3s ease; */
+    color: #ffff;
+    font-weight: bolder;
+}
+ 
+
+@keyframes fadeIn {
+  from {
+     opacity: 0; 
+     transform: translateY(10px); 
+    }
+
+  to { 
+    opacity: 1;
+    transform: translateY(0); 
+}
+
+}
+ .content-section {
+  animation: fadeIn 0.7s ease;
+}
+
+.content-section.d-none {
+  display: none !important;
+}
+
+.fade-in {
+  animation: fadeIn 0.7s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+

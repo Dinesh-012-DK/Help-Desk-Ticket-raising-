@@ -1,0 +1,493 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<!---------------------------------Body_of_content--------------------------------------->
+
+<body class="d-flex flex-column min-vh-100" style="background-color: rgb(238, 235, 232);">
+
+    <!---------------------------------Navigation_Bar--------------------------------------->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 gradient-navbar d-flex justify-content-between"
+        style="z-index: 1;">
+        <img src="{% static 'favicon/android-chrome-512x512.png' %}" style="border-radius: 50px;" alt="" width="50px" height="50">
+        <h3 class="ms-2" style="font-family: 'Gabarito', sans-serif;font-weight: 400;font-style: normal;">Help Desk</h3>
+        <div class="ms-auto">
+            {% if user %}
+            <span class="text-light fs-5">User : {{ user }}</span>
+
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+                aria-controls="offcanvasWithBothOptions"><img src="{% static 'profile.png' %}"
+                    width="40" height="40" style="border-radius: 30px;" alt="">
+            </button>
+
+            <button class="btn btn-outline-light btn-sm p-2" data-bs-toggle="modal" data-bs-target="#logoutModal"><i
+                    class="fa-solid fa-right-from-bracket me-1" style="font-size: 15px;"></i><span
+                    style="font-size: 15px;">Logout</span>
+            </button>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Agent Profile Offcanvas -->
+    <div class="offcanvas offcanvas-start text-dark" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel" style="background-color: rgb(238, 235, 232);">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="staticBackdropLabel"
+                style="font-size: 30px; color: rgb(17, 5, 187); font-weight: bolder ;">
+                User Profile</h5>
+            <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-flex-row p-2 text-center">
+                <i class="fa-solid fa-circle-user" style="color: rgb(23, 96, 206); font-size: 130px;"></i>
+                <h3 class="mt-2">{{ user.user_name }}</h3>
+            </div>
+            <form method="post" action="{% url 'profile_update' %}" class="w-100">
+                {% csrf_token %}
+                <!-- User Name -->
+                <div class="form-floating mb-4">
+                    <input type="text" id="userName" name="user_name" value="{{ user.user_name }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="User Name" required>
+                    <label for="userName">User Name</label>
+                </div>
+
+                <!-- User ID -->
+                <div class="form-floating mb-4">
+                    <input type="text" id="userid" name="user_id" value="{{ user.user_id }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="User ID" data-bs-toggle="tooltip"
+                        title="Only Admin Can Update this field" readonly>
+                    <label for="userid">User ID</label>
+                </div>
+
+                <!-- User Email -->
+                <div class="form-floating mb-4">
+                    <input type="email" id="userMail" name="user_email" value="{{user.email }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="User Email" required>
+                    <label for="userMail">User Email</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating mb-4">
+                    <input type="password" id="userPass" name="password" value="{{user.password }}"
+                        class="form-control bg-body-tertiary rounded-2" placeholder="Password" required>
+                    <label for="userPass">Password</label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="mt-2 btn btn-primary w-100">
+                    <i class="fa-solid fa-user-plus me-2"></i>Update User
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-------------------------------------_Logout_Message_--------------------------------------->
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">Yes, Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------------------- Sidebar --------------------------------------->
+
+    <button class="toggle-btn ms-2 mt-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
+        aria-controls="staticBackdrop">
+        <i class="fa-solid fa-bars bar-icon fs-4"></i>
+    </button>
+
+    <div class="offcanvas offcanvas-start custom-width" tabindex="-1" id="staticBackdrop"
+        aria-labelledby="staticBackdropLabel" style="background-color: rgb(238, 235, 232);">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="staticBackdropLabel"
+                style="font-size: 30px; color: rgb(17, 5, 187); font-weight: bolder ;">
+                User Dashboard</h5>
+            <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-bod ms-4 mt-3">
+            <button class="sidebar-btn-custom dashboard mt-1 h5" data-target="#rise">
+                <h5>RAISE TICKETS</h5>
+            </button>
+            <button class="sidebar-btn-custom create_admin  h5" data-target="#track">
+                <h5>TRACK TICKET STATUS</h5>
+            </button>
+            <button class="sidebar-btn-custom create_agent  h5" data-target="#history">
+                <h5>TICKET HISTORY</h5>
+            </button>
+            <!-- <button class="sidebar-btn-custom create_user  h5" data-target="#reply">
+                <h5>REPLY TO TICKETS</h5>
+            </button> -->
+            <button class="sidebar-btn-custom ticket_monitor  h5" data-target="#feedback">
+                <h5>WRITE FEEDBACK</h5>
+            </button>
+        </div>
+    </div>
+
+    <!----------------------------------Sidebar Toggle Script------------------------------------->
+
+    <main class="flex-grow-1 p-4 mt-5">
+        <div class="content-section mt-3" id="rise">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8 col-sm-10">
+                        <h1 class="text-center"
+                            style="font-size: 35px; color: rgb(17, 5, 187); text-shadow: 2px 2px 4px rgb(238, 149, 207);">
+                            Raise Tickets
+                        </h1>
+                        <p class="text-center mt-1"
+                            style="color: rgb(13, 13, 13); text-shadow: 2px 2px 4px rgb(100, 171, 83); font-style: italic;">
+                            FILL THE FORM BELOW TO RAISE A TICKET
+                        </p>
+
+                        <form action="{% url 'create_ticket' %}" method="post" enctype="multipart/form-data"
+                            class="mb-4">
+                            {% csrf_token %}
+
+                            <div class="form-floating mb-3">
+                                <input type="text" id="ticket-title" name="ticket_title" class="form-control"
+                                    placeholder="Ticket Title">
+                                <label for="ticket-title">Ticket Title</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <textarea id="ticket-description" name="ticket_description" class="form-control"
+                                    placeholder="Ticket Description" style="height: 150px;"></textarea>
+                                <label for="ticket-description">Ticket Description</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fromfile" class="form-label">Upload File (optional)</label>
+                                <input class="form-control" name="image" type="file" id="fromfile">
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select id="ticket-category" name="ticket_category" class="form-select">
+                                    <option value="" di> </option>
+                                    <option value="Software">Software</option>
+                                    <option value="Hardware">Hardware</option>
+                                    <option value="Network">Network</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <label for="ticket-category">Select Category</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select id="ticket-priority" name="ticket_priority" class="form-select">
+                                    <option value="" selected></option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Urgent">Urgent</option>
+                                </select>
+                                <label for="ticket-priority">Select Priority</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-50 fs-5" style="margin-left: 25%;">
+                                <i class="fa-solid fa-ticket me-3" style="transform: rotate(-30deg);"></i>
+                                Raise Ticket
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section mt-4" id="track">
+            <h3 class="text-center "
+                style="font-size: 40px; color: rgb(17, 5, 187);text-shadow: 2px 2px 4px rgb(238, 149, 207); ">
+                Ticket
+                Tracking</h3>
+            <table class="table table-hover mt-4 h5" style="margin-left: 8%; width: 83%;">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th class="border">Issue</th>
+                        <th class="border">Category</th>
+                        <th class="border">Priority</th>
+                        <th class="border">Status</th>
+                        <th class="border">Created At</th>
+                        <th class="border">Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td class="border"> {{ ticket.title }}</td>
+                        <td class="border">{{ ticket.category }}</td>
+                        <td class="border">
+                            {% if ticket.priority|lower == 'low' %}
+                            <span class="badge bg-success ">
+                                Low
+                            </span>
+                            {% elif ticket.priority|lower == 'medium' %}
+                            <span class="badge bg-warning text-dark ">
+                                Medium
+                            </span>
+                            {% elif ticket.priority|lower == 'high' %}
+                            <span class="badge bg-danger">
+                                High
+                            </span>
+                            {% elif ticket.priority|lower == 'urgent' %}
+                            <span class="badge bg-danger">
+                                Urgent
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary">
+                                <i class="fa-solid fa-question-circle me-1"></i> {{ ticket.priority }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="border">
+                            {% if ticket.status == "Open" %}
+                            <span class="badge bg-warning text-dark">Open</span>
+                            {% elif ticket.status == "In Progress" %}
+                            <span class="badge bg-primary">In Progress</span>
+                            {% elif ticket.status == "Resolved" %}
+                            <span class="badge bg-success">Resolved</span>
+                            {% elif ticket.status == "Closed" %}
+                            <span class="badge bg-secondary">Closed</span>
+                            {% else %}
+                            <span class="badge bg-light text-dark">{{ ticket.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="border">{{ ticket.created_at|date:"M d, Y h:i A" }}</td>
+                        <td class="border">
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#delete_ticket{{ ticket.id }}">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No tickets found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% for ticket in tickets %}
+        <div class="modal fade" id="delete_ticket{{ ticket.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="{% url 'delete_ticket' ticket.id %}">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Delete Ticket</h5>
+                            <button type="button" class="btn btn-danger btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete Ticket <span class="fw-bold fs-5 text-danger">
+                                {{ ticket.title }} ?</span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-success"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-outline-danger">Yes, Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+        <div class="content-section mt-4" id="history">
+            <h3 class="text-center "
+                style="font-size: 40px; color: rgb(17, 5, 187);text-shadow: 2px 2px 4px rgb(238, 149, 207); ">
+                Ticket
+                History</h3>
+            <div class="table-responsive">
+                <table class="table table-hover table-border mt-4 h5" style="margin-left: 8%; width: 83%;">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th scope="col" class="border">S.no</th>
+                            <th scope="col" class="border">Issue</th>
+                            <th scope="col" class="border">Category</th>
+                            <th scope="col" class="border">Priority</th>
+                            <th scope="col" class="border">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% if tickets %}
+                        {% for ticket in tickets %}
+                        <tr>
+                            <td class="border">{{ forloop.counter }}</td>
+                            <td class="border">{{ ticket.title }}</td>
+                            <td class="border">{{ ticket.category }}</td>
+                            <td class="border">
+                                {% if ticket.priority|lower == 'low' %}
+                                <span class="badge bg-success ">
+                                    Low
+                                </span>
+                                {% elif ticket.priority|lower == 'medium' %}
+                                <span class="badge bg-warning text-dark ">
+                                    Medium
+                                </span>
+                                {% elif ticket.priority|lower == 'high' %}
+                                <span class="badge bg-danger">
+                                    High
+                                </span>
+                                {% elif ticket.priority|lower == 'urgent' %}
+                                <span class="badge bg-danger">
+                                    Urgent
+                                </span>
+                                {% else %}
+                                <span class="badge bg-secondary">
+                                    <i class="fa-solid fa-question-circle me-1"></i> {{ ticket.priority }}
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="border">{{ ticket.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No tickets found.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- <div class="content-section bg-success mt-5" id="reply">
+            <h2 class="text-center mb-4">Create Monitor</h2>
+            <p>Form to create a new user will go here.</p>
+        </div> -->
+
+
+        <div class="container mt-4 content-section" id="feedback">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <h3 class="text-center"
+                        style="font-size: 40px; color: rgb(17, 5, 187);text-shadow: 2px 2px 4px rgb(238, 149, 207); ">
+                        Feedback</h3>
+                    <form method="POST" action="{% url 'submit_feedback' %}">
+                        {% csrf_token %}
+                        <label for="rating">Select Rating:</label>
+                        <select name="rating" class="form-select">
+                            <option value=""></option>
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3">3 - Okay</option>
+                            <option value="2">2 - Bad</option>
+                            <option value="1">1 - Poor</option>
+                        </select>
+
+                        <label for="comment" class="mt-3">Comment:</label>
+                        <textarea name="comment" class="form-control" rows="4" placeholder="Fill you opinion"
+                            style="height: 250px;">
+                        </textarea>
+
+                        <button type="submit" class="btn btn-primary mt-4" style="margin-left: 27%;width: 45%;">
+                            <i class="fa-regular fa-comment me-3"></i>Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!------------------_Login_Message_-------------------->
+
+    {% if messages %}
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {% for msg in messages %}
+                <div class="modal-header 
+          {% if msg.tags == 'success' %}bg-success text-white
+          {% elif msg.tags == 'error' %}bg-danger text-white
+          {% endif %}">
+                    <h5 class="modal-title" id="messageModalLabel">
+                        {% if msg.tags == 'success' %}Success{% elif msg.tags == 'error' %}Error{% endif %}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ msg }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-show message modal if messages exist
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('messageModal');
+            if (modalEl) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+
+            // Sidebar button click functionality
+            const sidebarButtons = document.querySelectorAll(".sidebar-btn-custom");
+            const contentSections = document.querySelectorAll(".content-section");
+
+            sidebarButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const targetId = button.getAttribute("data-target").replace('#', '');
+                    contentSections.forEach(section => section.classList.add("d-none"));
+                    sidebarButtons.forEach(btn => btn.classList.remove("active"));
+
+                    // Show the target section
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.classList.remove("d-none");
+                        targetSection.scrollIntoView({ behavior: "smooth" });
+                    }
+                    button.classList.add("active");
+                });
+            });
+            // Auto-click the first sidebar button to show its content
+            if (sidebarButtons.length > 0) {
+                sidebarButtons[0].click();
+            }
+        });
+    </script>
+</body>
+
+</html>
